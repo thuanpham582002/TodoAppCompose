@@ -1,7 +1,3 @@
 # TodoAppCompose
 <<<<<<< HEAD
-This is readme main update
-=======
-This is readme main_B
-Conflict fixed
- 
+This is readme main from clone2
