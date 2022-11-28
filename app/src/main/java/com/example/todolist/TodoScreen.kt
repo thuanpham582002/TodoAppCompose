@@ -1,7 +1,6 @@
 package com.example.todolist
 
 import android.util.Log
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -34,16 +33,14 @@ fun TodoScreen(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination?.route ?: "HomeScreen"
-    var isSaveable by remember { mutableStateOf(false) }
+    var isSavable by remember { mutableStateOf(false) }
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize(),
         topBar = {
             TodoTopBar(
                 canNavigate = navController.previousBackStackEntry != null,
                 title = currentScreen,
                 navigate = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             )
         },
@@ -57,31 +54,34 @@ fun TodoScreen(
                     )
                 },
                 onClickTodoFabSave = {
-                    isSaveable = true
+                    isSavable = true
                 },
                 currentScreen = currentScreen,
             )
         },
         content = { paddingValues ->
-            Box(Modifier.padding(paddingValues)) {
-                NavHost(
-                    navController = navController,
-                    startDestination = currentScreen,
-                ) {
-                    composable("HomeScreen") {
-                        HomeScreen()
-                    }
-                    composable("AddTodoScreen") {
-                        AddEditTodoScreen(
-                            isSaveable = isSaveable,
-                            onNavigateUp = {
-                                navController.popBackStack()
-                            },
-                            revertIsSaveable = {
-                                isSaveable = false
-                            },
-                        )
-                    }
+            NavHost(
+                navController = navController,
+                startDestination = "HomeScreen",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                composable("HomeScreen") {
+                    Log.i("backStackEntry", "$backStackEntry")
+                    HomeScreen()
+                }
+
+                composable("AddTodoScreen") {
+                    AddEditTodoScreen(
+                        isSavable = isSavable,
+                        onNavigateUp = {
+                            navController.navigateUp()
+                        },
+                        revertIsSavable = {
+                            isSavable = false
+                        },
+                    )
                 }
             }
         }
@@ -102,12 +102,6 @@ fun TodoFab(
         }
 
         "AddTodoScreen" -> {
-            TodoFabSave {
-                onClickTodoFabSave()
-            }
-        }
-
-        "EditTodoScreen" -> {
             TodoFabSave {
                 onClickTodoFabSave()
             }

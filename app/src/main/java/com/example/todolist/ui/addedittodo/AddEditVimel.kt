@@ -1,8 +1,5 @@
 package com.example.todolist.ui.addedittodo
 
-import android.content.Context
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.data.source.local.model.todo.TodoEntity
@@ -11,11 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-@Composable
-private fun getContext(): Context {
-    return LocalContext.current
-}
 
 class AddEditVimel : ViewModel() {
     private val _state = MutableStateFlow(AddEditTodoState())

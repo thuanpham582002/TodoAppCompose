@@ -14,13 +14,9 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -30,17 +26,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun AddEditTodoScreen(
     modifier: Modifier = Modifier,
-    isSaveable: Boolean,
+    isSavable: Boolean,
     onNavigateUp: () -> Unit,
-    revertIsSaveable: () -> Unit,
+    revertIsSavable: () -> Unit,
 ) {
     val addEditVimel: AddEditVimel = viewModel()
     val state by addEditVimel.state.collectAsState()
     val focusManager = LocalFocusManager.current
 
-    if (isSaveable) {
+    if (isSavable) {
         addEditVimel.onEvent(AddEditTodoEvent.SaveTodo)
-        revertIsSaveable()
+        revertIsSavable()
         onNavigateUp()
         Log.i("AddEditTodo", "AddEditTodoScreen: OnSave")
     }
